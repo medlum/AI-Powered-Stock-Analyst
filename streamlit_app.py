@@ -9,22 +9,17 @@ st.set_page_config(page_title="AI Powered Stock Analyst",
                    page_icon="💰",
                    initial_sidebar_state="expanded")
 
-income_statement = None
-balance_sheet = None
-cash_flow = None
-valuation_ratios = None
-financial_ratios = None
-dividends_and_splits = None
-stock_data = None
-
 
 # Initialize session state
 initialize_session_state()
 initialize_chat_history()
 
+st.markdown(image_css, unsafe_allow_html=True)
+
 client = InferenceClient(token=st.secrets.api_keys.huggingfacehub_api_token)
 
 st.sidebar.subheader(":blue[AI-Powered Stock Analyst]")
+st.sidebar.image('cosmo.jpeg', width=80)
 st.sidebar.write(header)
 # set LLM model
 model_select = st.sidebar.selectbox(":blue[AI model]", 
@@ -72,6 +67,7 @@ if select_counter:
 
     search_results = get_url(select_counter)
 
+    st.subheader("Stock News")
     for index, news in enumerate(search_results['results']):
 
         with st.spinner(f"Retrieving news..."):
@@ -97,39 +93,37 @@ if select_counter:
                 for chunk in stream:
                     if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
                         collected_response += chunk.choices[0].delta.content
-                        with st.chat_message("assistant"):
-                            st.write(collected_response)
-                            col1, col2 = st.columns([0.4,10], gap='small', vertical_alignment="center")            
-                            col1.image(news['meta_url']['favicon'], width=20)
-                            col2.markdown(
-                                f'<p style="font-size:14px; color:blue;"><a href="{news['url']}" target="_blank" style="text-decoration: none;">Read more...</a></p>',
-                                unsafe_allow_html=True)
-                st.session_state.msg_history.append({"role": "system", "content": f"{collected_response}"})
+                        #with st.chat_message("assistant"):
+                        st.write(collected_response)
+            print(collected_response)
+            col1, col2 = st.columns([0.4,10], gap='small', vertical_alignment="center")            
+            col1.image(news['meta_url']['favicon'], width=20)
+            col2.markdown(
+                f'<p style="font-size:14px; color:blue;"><a href="{news['url']}" target="_blank" style="text-decoration: none;">Read more...</a></p>',
+                unsafe_allow_html=True)
+               
+            st.session_state.msg_history.append({"role": "system", "content": f"{collected_response}"})
 
         st.session_state.news_history[1:] = []    
                 
-else:
-    st.session_state.msg_history[1:] = []
-    st.session_state.news_history[1:] = []
 
-
-for msg in st.session_state.msg_history:
-    if msg['role'] != "system":
-        st.chat_message(msg["role"]).write(msg["content"])
-        
-if user_input := (st.chat_input("Ask a question...") or select_counter):
+    for msg in st.session_state.msg_history:
+        if msg['role'] != "system":
+            st.chat_message(msg["role"]).write(msg["content"])
+            
+    #if user_input := (st.chat_input("Ask a question...") or select_counter):
 
     with st.spinner("Analyzing Stock Performance..."):
 
-        if user_input != select_counter:
+        #if user_input != select_counter:
             # Append the user's input to the msg_history
-            st.session_state.msg_history.append(
-                {"role": "user", "content": user_input})
+        #    st.session_state.msg_history.append(
+        #        {"role": "user", "content": user_input})
 
             # write current chat on UI
-            if user_input != select_counter:
-                with st.chat_message("user"):
-                    st.write(user_input)
+        #    if user_input != select_counter:
+        #        with st.chat_message("user"):
+        #            st.write(user_input)
 
             # Create a placeholder for the streaming response 
         with st.empty():
@@ -150,35 +144,42 @@ if user_input := (st.chat_input("Ask a question...") or select_counter):
             for chunk in stream:
                 if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
                     collected_response += chunk.choices[0].delta.content
-                    with st.chat_message("assistant"):
-                        st.write(collected_response)
+                    #with st.chat_message("assistant"):
+                    st.write(collected_response)
         
         # Add the assistant's response to the conversation history
         st.session_state.msg_history.append(
             {"role": "assistant", "content": collected_response})
-
+        
         with st.container(border=False):
 
             tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Income statement", "Balance sheet", "Cash flow", "Ratios", "Valuations", "Dividends", "Stock Price"])
             
             if data['income_statement'] is not None:
-               tab1.dataframe(data['income_statement'])
+                tab1.dataframe(data['income_statement'])
             
             if data['balance_sheet'] is not None:
                 tab2.dataframe(data['balance_sheet'])
-            
+
             if  data['cash_flow'] is not None:
                 tab3.dataframe(data['cash_flow'])
-              
+                
             if data['financial_ratios'] is not None:
                 tab4.dataframe(data['financial_ratios'])
             
             if data['valuation_ratios'] is not None:
-                 tab5.dataframe(data['valuation_ratios'])
-               
+                    tab5.dataframe(data['valuation_ratios'])
+                
             if data['dividends_and_splits'] is not None:
                 tab6.dataframe(data['dividends_and_splits'])
 
             if data['stock_data'] is not None:
                 with tab7:
                     plot_stock_data(stock_symbol)
+else:
+    st.session_state.msg_history[1:] = []
+    st.session_state.news_history[1:] = []
+
+
+
+    

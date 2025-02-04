@@ -32,6 +32,14 @@ class DisplayMarkdown:
 display_md = DisplayMarkdown()
 
 
+income_statement = None
+balance_sheet = None
+cash_flow = None
+valuation_ratios = None
+financial_ratios = None
+dividends_and_splits = None
+stock_data = None
+
 
 def get_income_statement(stock_symbol: str) -> pd.DataFrame:
     """
@@ -343,6 +351,9 @@ def visit_webpage(url: str) -> str:
         return f"Error fetching the webpage: {str(e)}"
     except Exception as e:
         return f"An unexpected error occurred: {str(e)}"
+    
+
+
 #def get_analyst_price_target(stock_symbol: str) -> pd.DataFrame:    
 #    stock = yf.Ticker(stock_symbol)
 #    data = stock.get_analyst_price_target
