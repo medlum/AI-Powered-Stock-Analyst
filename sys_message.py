@@ -64,7 +64,7 @@ system_analysis_message = """
 
 header = """
 This app is powered by AI to recommend stock buying decisions. It analyzes the company's financial reports, stock prices and news to make recommendations.
-You can locate the financial reports and stock price chart at the end of analysis.
+Financial reports and stock price chart are available at the end of the messages.
 
 The app is still under active development. 
 """
