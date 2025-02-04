@@ -63,7 +63,8 @@ system_analysis_message = """
 
 
 header = """
-This app is powered by AI to recommend stock buying decisions. It analyzes the company various financial reports, stock prices and news to make recommendations.
+This app is powered by AI to recommend stock buying decisions. It analyzes the company's financial reports, stock prices and news to make recommendations.
+You can locate the financial reports and stock price chart at the end of analysis.
 
-It is still under active development. 
+The app is still under active development. 
 """
