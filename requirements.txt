@@ -1,0 +1,10 @@
+streamlit 
+pandas 
+yfinance 
+huggingface_hub  
+yfinance
+datetime
+requests
+json
+markdownify
+re
