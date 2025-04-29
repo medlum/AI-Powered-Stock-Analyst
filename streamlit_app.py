@@ -154,7 +154,8 @@ if select_counter:
             #if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
                 collected_response += chunk.choices[0].delta.content
                 #with st.chat_message("assistant"):
-                placeholder.write(collected_response)
+        #        placeholder.write(collected_response)
+        st.write(collected_response)
         
         # Add the assistant's response to the conversation history
         st.session_state.msg_history.append(
