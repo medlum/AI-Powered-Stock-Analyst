@@ -151,7 +151,7 @@ if select_counter:
 
             # Stream the response and update the placeholder in real-time
             for chunk in stream:
-                if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
+                #if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
                     collected_response += chunk.choices[0].delta.content
                     #with st.chat_message("assistant"):
                     st.write(collected_response)
