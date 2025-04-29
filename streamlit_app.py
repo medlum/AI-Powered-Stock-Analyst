@@ -134,27 +134,27 @@ if select_counter:
         #            st.write(user_input)
 
             # Create a placeholder for the streaming response 
-        with st.empty():
+        placeholder = st.empty()
                     # Stream the response
 
-            stream = client.chat.completions.create(
-                model=model_id,
-                messages=st.session_state.msg_history,
-                temperature=0.2,
-                max_tokens=5524,
-                top_p=0.7,
-                stream=True,
-                )
+        stream = client.chat.completions.create(
+            model=model_id,
+            messages=st.session_state.msg_history,
+            temperature=0.2,
+            max_tokens=5524,
+            top_p=0.7,
+            stream=True,
+            )
 
-            # Initialize an empty string to collect the streamed content
-            collected_response = ""
+        # Initialize an empty string to collect the streamed content
+        collected_response = ""
 
-            # Stream the response and update the placeholder in real-time
-            for chunk in stream:
-                #if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
-                    collected_response += chunk.choices[0].delta.content
-                    #with st.chat_message("assistant"):
-                    st.write(collected_response)
+        # Stream the response and update the placeholder in real-time
+        for chunk in stream:
+            #if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
+                collected_response += chunk.choices[0].delta.content
+                #with st.chat_message("assistant"):
+                placeholder.text.write(collected_response)
         
         # Add the assistant's response to the conversation history
         st.session_state.msg_history.append(
