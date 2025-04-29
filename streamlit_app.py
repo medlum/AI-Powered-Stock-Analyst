@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 from huggingface_hub import InferenceClient
+from utils_inference import *
 from utils import *
 
 st.set_page_config(page_title="AI Powered Stock Analyst",
@@ -22,16 +23,20 @@ st.sidebar.subheader(":blue[AI-Powered Stock Analyst]")
 st.sidebar.image('cosmo.jpeg', width=80)
 st.sidebar.write(header)
 # set LLM model
-model_select = st.sidebar.selectbox(":blue[AI model]", 
-                        ["Qwen/Qwen2.5-72B-Instruct",
-                            "Qwen/Qwen2.5-Coder-32B-Instruct",
-                            "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
-                            "Qwen/QwQ-32B-Preview",
-                            "nvidia/Llama-3.1-Nemotron-70B-Instruct-HF",
-                            "meta-llama/Llama-3.3-70B-Instruct",
-                            "meta-llama/Llama-3.1-8B-Instruct"],
-                        index=5,
-                        )
+#model_select = st.sidebar.selectbox(":blue[AI model]", 
+#                        ["Qwen/Qwen2.5-72B-Instruct",
+#                            "Qwen/Qwen2.5-Coder-32B-Instruct",
+#                            "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+#                            "Qwen/QwQ-32B-Preview",
+#                            "nvidia/Llama-3.1-Nemotron-70B-Instruct-HF",
+#                            "meta-llama/Llama-3.3-70B-Instruct",
+#                            "meta-llama/Llama-3.1-8B-Instruct"],
+#                        index=5,
+#                        )
+
+model_id = st.sidebar.selectbox(":blue[AI model]", 
+                        model_list,
+                        index=0)
 
 exchange = st.sidebar.selectbox(":blue[Stock Exchange]", ['NYSE', 'SGX'], placeholder='Choose an stock exchange')
 
@@ -78,13 +83,15 @@ if select_counter:
             with st.empty():
                         # Stream the response
 
-                stream = client.chat_completion(
-                    model="Qwen/Qwen2.5-Coder-32B-Instruct",
-                    messages=st.session_state.news_history,
-                    temperature=0.1,
-                    max_tokens=4524,
+                stream = client.chat.completions.create(
+                    model=model_id,
+                    messages=st.session_state.msg_history,
+                    temperature=0.2,
+                    max_tokens=5524,
                     top_p=0.7,
-                    stream=True,)
+                    stream=True,
+                    )
+
 
                 # Initialize an empty string to collect the streamed content
                 collected_response = ""
@@ -129,13 +136,14 @@ if select_counter:
         with st.empty():
                     # Stream the response
 
-            stream = client.chat_completion(
-                model=model_select,
+            stream = client.chat.completions.create(
+                model=model_id,
                 messages=st.session_state.msg_history,
-                temperature=0.6,
-                max_tokens=4524,
+                temperature=0.2,
+                max_tokens=5524,
                 top_p=0.7,
-                stream=True,)
+                stream=True,
+                )
 
             # Initialize an empty string to collect the streamed content
             collected_response = ""

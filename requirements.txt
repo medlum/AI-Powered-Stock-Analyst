@@ -5,3 +5,4 @@ huggingface_hub
 yfinance
 requests
 markdownify
+together

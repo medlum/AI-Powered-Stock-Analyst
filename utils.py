@@ -338,9 +338,9 @@ def visit_webpage(url: str) -> str:
         # Send a GET request to the URL
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for bad status codes
-
+        
         # Convert the HTML content to Markdown
-        markdown_content = markdownify(response.text).strip()
+        markdown_content = markdownify(response.text,  strip=["nav", "aside", "footer"]).strip()
 
         # Remove multiple line breaks
         markdown_content = re.sub(r"\n{3,}", "\n\n", markdown_content)
@@ -349,10 +349,20 @@ def visit_webpage(url: str) -> str:
 
     except RequestException as e:
         return f"Error fetching the webpage: {str(e)}"
+    
     except Exception as e:
         return f"An unexpected error occurred: {str(e)}"
-    
 
+query = "oracle"
+search_results = get_url(query=query)
+
+for index, news in enumerate(search_results['results']):
+    print("COUNT: ", news['url'])
+    print(visit_webpage(news['url']))
+
+url = "https://apnews.com/article/trump-eu-tariffs-countermeasures-806a3b9bcc9cd4e45817e672d95f0070"
+content = (visit_webpage(url))
+print(content)
 
 #def get_analyst_price_target(stock_symbol: str) -> pd.DataFrame:    
 #    stock = yf.Ticker(stock_symbol)
