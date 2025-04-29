@@ -134,7 +134,7 @@ if select_counter:
         #            st.write(user_input)
 
             # Create a placeholder for the streaming response 
-        placeholder = st.empty()
+        #placeholder = st.empty()
                     # Stream the response
 
         stream = client.chat.completions.create(
@@ -152,7 +152,7 @@ if select_counter:
         # Stream the response and update the placeholder in real-time
         for chunk in stream:
             #if 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
-                collected_response += chunk.choices[0].delta.content
+            collected_response += chunk.choices[0].delta.content
                 #with st.chat_message("assistant"):
         #        placeholder.write(collected_response)
         st.write(collected_response)
