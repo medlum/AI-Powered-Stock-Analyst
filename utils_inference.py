@@ -5,7 +5,7 @@ from together import Together
 def initialize_inferenceclient(): 
 
     try:
-        client = Together(api_key=st.session_state.access_token)
+        client = Together(api_key=st.secrets.api_keys.together_ai_token)
         return client
         
     except Exception as e:

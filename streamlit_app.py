@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import yfinance as yf
-from huggingface_hub import InferenceClient
-from utils_inference import *
+#from huggingface_hub import InferenceClient
+from utils_inference import initialize_inferenceclient, model_list
 from utils import *
 
 st.set_page_config(page_title="AI Powered Stock Analyst",
@@ -17,7 +17,8 @@ initialize_chat_history()
 
 st.markdown(image_css, unsafe_allow_html=True)
 
-client = InferenceClient(token=st.secrets.api_keys.huggingfacehub_api_token)
+#client = InferenceClient(token=st.secrets.api_keys.huggingfacehub_api_token)
+client = initialize_inferenceclient()
 
 st.sidebar.subheader(":blue[AI-Powered Stock Analyst]")
 st.sidebar.image('cosmo.jpeg', width=80)
