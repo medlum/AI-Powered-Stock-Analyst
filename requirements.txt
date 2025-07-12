@@ -7,3 +7,5 @@ requests
 markdownify
 together
 finnhub-python
+plotly
+newspaper3k
