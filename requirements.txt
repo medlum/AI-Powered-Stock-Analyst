@@ -9,3 +9,4 @@ together
 finnhub-python
 plotly
 newspaper3k
+lxml[html_clean]
