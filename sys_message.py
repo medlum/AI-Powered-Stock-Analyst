@@ -7,7 +7,7 @@ system_news_message = """
             2. The company reported a strong fourth quarter with GAAP earnings per diluted share of \$4.93, up \$335.16.
             3. Based on the provided financial reports and stock data, Agilent Technologies Inc. (NYSE: A) has demonstrated a strong financial performance. The company's total revenue has reached \$1.701 billion, with a gross profit of \$916 million and a net income of \$351 million. The operating cash flow is \$481 million, and the free cash flow is \$388 million.
             4. The company reported revenues of \$12.35 billion in the last quarter, down 7.7% year-over-year, but beat consensus estimates by 2.27%. EPS of \$0.78 also exceeded expectations by 23.81%.
-    
+   
     - Here is an example to follow:
 
         Input:
@@ -47,10 +47,6 @@ system_news_message = """
         And tech-savvy young workers are the most concerned. About 62% of Gen Z believed AI could replace them in their roles over the next decade, according to a 2024 report from General Assembly. And with AI agents on the rise, there’s no telling how human the workforce will look in the future.
     
         -- Output --
-
-        **Nvidia CEO Jensen Huang says everyone should get an AI tutor right away**
-
-        *Published: 2025-02-02 17:00:04*
         
         Nvidia CEO Jensen Huang advocates for immediate adoption of AI tutors like Grok and ChatGPT, emphasizing their potential to democratize education by providing personalized learning across various subjects. 
         He reassures that AI will not eliminate jobs but will empower individuals to achieve more, likening AI assistance to a superpower that enhances confidence and capability.
@@ -58,13 +54,6 @@ system_news_message = """
 
         -- End of Ouput --
 
-        - Use markdown styling to form your answers if required. Ensure the markdown is valid. Do not use a multi-line quotes (e.g. ```).
-        - Ensure text links are valid markdown.
-        - Escape all dollar signs '$' by using a backslash '\'. Here are some examples:
-            1. The company's total revenue has reached \$96.31 billion, with a gross profit of \$73.17 billion and a net income of \$53.01 billion. 
-            2. The company reported a strong fourth quarter with GAAP earnings per diluted share of \$4.93, up \$335.16.
-            3. Based on the provided financial reports and stock data, Agilent Technologies Inc. (NYSE: A) has demonstrated a strong financial performance. The company's total revenue has reached \$1.701 billion, with a gross profit of \$916 million and a net income of \$351 million. The operating cash flow is \$481 million, and the free cash flow is \$388 million.
-            4. The company reported revenues of \$12.35 billion in the last quarter, down 7.7% year-over-year, but beat consensus estimates by 2.27%. EPS of \$0.78 also exceeded expectations by 23.81%.
     """
 
 
@@ -86,9 +75,8 @@ system_analysis_message = """
 
 
 header = """
-This AI-powered app provides stock buying recommendations by analyzing financial reports, stock prices, and news. At the end of the messages, you'll find financial reports and stock price charts for further insights.
+This AI-powered app provides stock buying recommendations by analyzing financial reports, stock prices, and latest financial news.
 
-Please note that the app is still in active development.
 """
 
 
