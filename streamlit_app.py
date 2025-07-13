@@ -6,7 +6,7 @@ from utils_markdown import display_md
 from utils_stock import *
 from utils_url import *
 from sys_message import image_css, header
-from utils_login import login_dialog
+from utils_login import login_dialog, btn_css
 
 st.set_page_config(page_title="AI Powered Stock Analyst",
                    layout="centered",
@@ -54,8 +54,17 @@ if st.session_state.get("authenticated", False):
     with st.sidebar:
         # select counter
         select_counter = st.selectbox(':blue[Stock Counter]', df["Name"], index=None, key='select_counter', placeholder='Choose a company')
-        display_md.display('To clear chat history, simply unselect the stock counter.', font_size='14px', tag='p')
+        display_md.display('To clear chat history, simply unselect the stock counter.', font_size='12px', tag='p')
 
+        st.markdown(btn_css, unsafe_allow_html=True)
+        if st.button("Logout"):
+            # Reset session state
+            for key in ["authenticated", "user"]:
+                if key in st.session_state:
+                    del st.session_state[key]
+            st.rerun()
+
+        
     if select_counter:
         # filter stock symbol from company name
         stock_symbol = df.loc[df["Name"] == select_counter, "Symbol"].values[0]
