@@ -128,7 +128,7 @@ if st.session_state.get("authenticated", False):
                     temperature=0.2,
                     max_tokens=5524,
                     top_p=0.7,
-                    #stream=True,
+                    stream=True,
                     )
 
                 # Initialize an empty string to collect the streamed content
