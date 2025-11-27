@@ -135,10 +135,15 @@ if st.session_state.get("authenticated", False):
                 collected_response = ""
                 
                 # Stream the response and update the placeholder in real-time
-                for chunk in stream:
-                    collected_response += chunk.choices[0].delta.content
-                    placeholder.write(collected_response.replace("{", " ").replace("}", " "))
+                #for chunk in stream:
+                #    collected_response += chunk.choices[0].delta.content
+                #    placeholder.write(collected_response.replace("{", " ").replace("}", " "))
                 
+                for chunk in stream:
+                    if chunk.output_text:
+                        collected_response += chunk.output_text
+                        placeholder.write(collected_response)
+
                 # append summarize news from llm to message history
                 st.session_state.msg_history.append({"role": "system", "content": f"{collected_response}"})
 
