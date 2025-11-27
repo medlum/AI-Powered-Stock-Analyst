@@ -19,7 +19,8 @@ model_list = [
                 "meta-llama/Llama-3.3-70B-Instruct-Turbo",
                 #"Qwen/Qwen2.5-72B-Instruct",
                 #"deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
-                "Qwen/Qwen2.5-72B-Instruct-Turbo"
+                "Qwen/Qwen2.5-72B-Instruct-Turbo",
+                "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"
                 
             ]
 
