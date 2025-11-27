@@ -162,29 +162,54 @@ if st.session_state.get("authenticated", False):
         # -------------------- news retrieval  -------------------- #
 
         with st.spinner("Analyzing Stock Performance..."):
-            
-            # llm to analyze and recommend stock with yfinance data and news summary
+
             placeholder = st.empty()
-            stream = client.chat.completions.create(
+
+            stream = client.responses.create(
                 model=model_select,
                 messages=st.session_state.msg_history,
                 temperature=0.2,
-                max_tokens=5524,
+                max_output_tokens=5524,
                 top_p=0.7,
                 stream=True,
-                )
+            )
 
-            # Initialize an empty string to collect the streamed content
             collected_response = ""
-            
-            # Stream the response and update the placeholder in real-time
+
             for chunk in stream:
-                collected_response += chunk.choices[0].delta.content
-                placeholder.write(collected_response.replace("{", " ").replace("}", " "))
+                if chunk.output_text:
+                    collected_response += chunk.output_text
+                    placeholder.write(collected_response)
+
+            # Add assistant final reply to history
+            st.session_state.msg_history.append({
+                "role": "assistant",
+                "content": collected_response
+            })
+
             
-            # Add the assistant's response to the conversation history
-            st.session_state.msg_history.append(
-                {"role": "assistant", "content": collected_response})
+            # llm to analyze and recommend stock with yfinance data and news summary
+#            placeholder = st.empty()
+#            stream = client.chat.completions.create(
+#                model=model_select,
+#                messages=st.session_state.msg_history,
+#                temperature=0.2,
+#                max_tokens=5524,
+#                top_p=0.7,
+#                stream=True,
+#                )
+#
+#            # Initialize an empty string to collect the streamed content
+#            collected_response = ""
+#            
+#            # Stream the response and update the placeholder in real-time
+#            for chunk in stream:
+#                collected_response += chunk.choices[0].delta.content
+#                placeholder.write(collected_response.replace("{", " ").replace("}", " "))
+#            
+#            # Add the assistant's response to the conversation history
+#            st.session_state.msg_history.append(
+#                {"role": "assistant", "content": collected_response})
             
             st.divider()
             
