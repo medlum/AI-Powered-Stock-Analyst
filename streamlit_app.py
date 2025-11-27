@@ -120,8 +120,8 @@ if st.session_state.get("authenticated", False):
                 st.session_state.news_history.append(
                 {"role": "system", "content": f"here is one of the news : {content}"})
 
-                # llm to summarize news in response
                 placeholder = st.empty()
+
                 stream = client.chat.completions.create(
                     model=model_select,
                     messages=st.session_state.news_history,
@@ -129,23 +129,45 @@ if st.session_state.get("authenticated", False):
                     max_tokens=5524,
                     top_p=0.7,
                     stream=True,
-                    )
+                )
 
-                # Initialize an empty string to collect the streamed content
                 collected_response = ""
-                
-                # Stream the response and update the placeholder in real-time
-                #for chunk in stream:
-                #    collected_response += chunk.choices[0].delta.content
-                #    placeholder.write(collected_response.replace("{", " ").replace("}", " "))
-                
+
                 for chunk in stream:
-                    if chunk.output_text:
-                        collected_response += chunk.output_text
+                    delta = chunk.choices[0].delta
+                    if "content" in delta and delta["content"] is not None:
+                        collected_response += delta["content"]
                         placeholder.write(collected_response)
 
-                # append summarize news from llm to message history
-                st.session_state.msg_history.append({"role": "system", "content": f"{collected_response}"})
+                # save result
+                st.session_state.msg_history.append({
+                    "role": "system",
+                    "content": collected_response
+                })
+
+                                
+                
+                # llm to summarize news in response
+#                placeholder = st.empty()
+#                stream = client.chat.completions.create(
+#                    model=model_select,
+#                    messages=st.session_state.news_history,
+#                    temperature=0.2,
+#                    max_tokens=5524,
+#                    top_p=0.7,
+#                    stream=True,
+#                    )
+#
+#                # Initialize an empty string to collect the streamed content
+#                collected_response = ""
+#                
+#                # Stream the response and update the placeholder in real-time
+#                for chunk in stream:
+#                    collected_response += chunk.choices[0].delta.content
+#                    placeholder.write(collected_response.replace("{", " ").replace("}", " "))
+#                
+#                # append summarize news from llm to message history
+#                st.session_state.msg_history.append({"role": "system", "content": f"{collected_response}"})
 
                 # show news url and icon at each news summary
                 col1, col2 = st.columns([0.4,10], gap='small', vertical_alignment="center")            
@@ -170,11 +192,11 @@ if st.session_state.get("authenticated", False):
 
             placeholder = st.empty()
 
-            stream = client.responses.create(
+            stream = client.chat.completions.create(
                 model=model_select,
                 messages=st.session_state.msg_history,
                 temperature=0.2,
-                max_output_tokens=5524,
+                max_tokens=5524,
                 top_p=0.7,
                 stream=True,
             )
@@ -182,15 +204,40 @@ if st.session_state.get("authenticated", False):
             collected_response = ""
 
             for chunk in stream:
-                if chunk.output_text:
-                    collected_response += chunk.output_text
+                delta = chunk.choices[0].delta
+                if "content" in delta and delta["content"] is not None:
+                    collected_response += delta["content"]
                     placeholder.write(collected_response)
 
-            # Add assistant final reply to history
             st.session_state.msg_history.append({
                 "role": "assistant",
                 "content": collected_response
             })
+
+
+#            placeholder = st.empty()
+#
+#            stream = client.responses.create(
+#                model=model_select,
+#                messages=st.session_state.msg_history,
+#                temperature=0.2,
+#                max_output_tokens=5524,
+#                top_p=0.7,
+#                stream=True,
+#            )
+#
+#            collected_response = ""
+#
+#            for chunk in stream:
+#                if chunk.output_text:
+#                    collected_response += chunk.output_text
+#                    placeholder.write(collected_response)
+#
+#            # Add assistant final reply to history
+#            st.session_state.msg_history.append({
+#                "role": "assistant",
+#                "content": collected_response
+#            })
 
             
             # llm to analyze and recommend stock with yfinance data and news summary
